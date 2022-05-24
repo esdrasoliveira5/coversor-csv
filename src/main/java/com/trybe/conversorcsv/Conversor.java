@@ -44,42 +44,14 @@ public class Conversor {
     for (File f : pastaDeEntradas.listFiles()) {
       this.lerArquivo(f, pastaDeSaidas);
     }
-
-    for (File f : pastaDeSaidas.listFiles()) {
-      this.readFile2(f);
-    }
-  }
-
-  /**
-   * EntradaArquivo.
-   */
-  public void readFile2(File entradaArquivo) {
-    try {
-      FileReader leitorArquivo = new FileReader(entradaArquivo);
-
-      BufferedReader bufferedLeitor = new BufferedReader(leitorArquivo);
-      String conteudoLinha = bufferedLeitor.readLine();
-      System.out.println(conteudoLinha);
-
-      while (conteudoLinha != null) {
-        System.out.println(conteudoLinha);
-        conteudoLinha = bufferedLeitor.readLine();
-      }
-      bufferedLeitor.close();
-    } catch (IOException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
-    }
-
   }
 
   /**
    * metodo Criar Arquivo.
    */
 
-  public void criarArquivo(String name, File pastaDeSaidas) {
+  public void criarArquivo(File newArquivo) {
     try {
-      File newArquivo = new File(pastaDeSaidas + File.separator + name);
       if (newArquivo.createNewFile()) {
         System.out.println("File created: " + newArquivo.getName());
       } else {
@@ -99,8 +71,8 @@ public class Conversor {
       FileReader leitorArquivo = new FileReader(entradaArquivo);
       BufferedReader bufferedLeitor = new BufferedReader(leitorArquivo);
 
-      File newArquivo = new File(pastaDeSaidas + entradaArquivo.getName());
-      this.criarArquivo(entradaArquivo.getName(), pastaDeSaidas);
+      File newArquivo = new File(pastaDeSaidas + File.separator + entradaArquivo.getName());
+      this.criarArquivo(newArquivo);
 
       String conteudoLinha = bufferedLeitor.readLine();
 
@@ -113,19 +85,18 @@ public class Conversor {
         if (conteudoLinha.equals("Nome completo,Data de nascimento,Email,CPF")) {
           bufferedEscritor.write(conteudoLinha);
           bufferedEscritor.newLine();
-          bufferedEscritor.flush();
+
           conteudoLinha = bufferedLeitor.readLine();
         } else {
           String newLinha = this.editarlinha(conteudoLinha);
           bufferedEscritor.write(newLinha);
           bufferedEscritor.newLine();
-          bufferedEscritor.flush();
 
           conteudoLinha = bufferedLeitor.readLine();
         }
       }
 
-
+      bufferedEscritor.flush();
       bufferedLeitor.close();
       bufferedEscritor.close();
     } catch (IOException e) {
